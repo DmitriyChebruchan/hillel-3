@@ -82,6 +82,7 @@ def mean():
     except FileNotFoundError:
         return "File not found."
 
+
 # space counter page
 @app.route("/space/")
 def space():
