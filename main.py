@@ -91,7 +91,10 @@ def space():
     try:
         with urllib.request.urlopen(url) as response:
             data = json.loads(response.read().decode())
-            result = f'There are {data["number"]} people on orbit.'
-        return result
+            if len(data["people"]) == data["number"]:
+                result = f'There are {data["number"]} people on orbit.'
+                return result
+            else:
+                return "Number of people listed is not in line with 'number'."
     except urllib.error.URLError as e:
         return f"Error: {e}"
