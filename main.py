@@ -1,6 +1,7 @@
 from flask import Flask, request
 from faker import Faker
-import csv
+import csv, json
+import urllib.request, urllib.error
 
 fake = Faker()
 
@@ -12,6 +13,7 @@ def index():
     return "Index Page"
 
 
+# requirements page
 @app.route("/requrements/")
 def requirements():
     file_name = "requirements.txt"
@@ -27,6 +29,7 @@ def requirements():
         return "File not found."
 
 
+# names and e-mails generator
 @app.route("/users/generate")
 def user_generator():
     quantity = request.args.get("quantity")
@@ -47,6 +50,7 @@ def user_generator():
     return result
 
 
+# average measure page
 @app.route("/mean/")
 def mean():
     try:
@@ -77,3 +81,16 @@ def mean():
 
     except FileNotFoundError:
         return "File not found."
+
+# space counter page
+@app.route("/space/")
+def space():
+    url = "http://api.open-notify.org/astros.json"
+
+    try:
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read().decode())
+            result = f'There are {data["number"]} people on orbit.'
+        return result
+    except urllib.error.URLError as e:
+        return f"Error: {e}"
